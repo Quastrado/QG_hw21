@@ -2,9 +2,7 @@ package drivers;
 
 import com.codeborne.selenide.WebDriverProvider;
 import config.BrowserStackConfig;
-import net.bytebuddy.pool.TypePool;
 import org.aeonbits.owner.ConfigFactory;
-import org.aeonbits.owner.Mutable;
 import org.jspecify.annotations.NonNull;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
