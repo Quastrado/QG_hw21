@@ -2,9 +2,12 @@ package config;
 
 import org.aeonbits.owner.Config;
 
-@Config.Sources({"classpath:browserstack.properties"})
+@Config.Sources({"classpath:${platform}.properties"})
 
 public interface BrowserStackConfig extends Config {
+    @Key("platformName")
+    String getPlatformName();
+
     @Key("username")
     String getUsername();
 
