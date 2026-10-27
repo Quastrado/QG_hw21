@@ -15,15 +15,24 @@ import java.util.HashMap;
 
 public class BrowserStackDriver implements WebDriverProvider {
 
+    private static final String platform = System.getProperty("platform", "android").toLowerCase();
+
     protected static BrowserStackConfig browserStackConfig = ConfigFactory.create(BrowserStackConfig.class,
             System.getProperties());
+
 
     @NonNull
     @Override
     public WebDriver createDriver(@NonNull Capabilities capabilities) {
         MutableCapabilities caps = new MutableCapabilities();
 
-        caps.setCapability("platformName", browserStackConfig.getPlatformName());
+        if (platform.equals("ios")) {
+            caps.setCapability("appium:automationName", "XCUITest");
+        } else {
+            caps.setCapability("appium:automationName", "UiAutomator2");
+        }
+
+        caps.setCapability("platformName", platform);
         caps.setCapability("appium:deviceName", browserStackConfig.getDevice());
         caps.setCapability("appium:platformVersion", browserStackConfig.getVersion());
         caps.setCapability("appium:app", browserStackConfig.getApp());
@@ -39,7 +48,7 @@ public class BrowserStackDriver implements WebDriverProvider {
         caps.setCapability("bstack:options", browserstackOptions);
 
         try{
-            URL remoteUrl = new URL("https://hub.browserstack.com/wd/hub");
+            URL remoteUrl = new URL(browserStackConfig.getRemoteUrl());
             System.out.println("--- ПОПЫТКА ЗАПУСКА ДРАЙВЕРА НА BROWSERSTACK ---");
             AppiumDriver driver = new AppiumDriver(remoteUrl, caps);
             System.out.println("--- ДРАЙВЕР УСПЕШНО СОЗДАН ---");
