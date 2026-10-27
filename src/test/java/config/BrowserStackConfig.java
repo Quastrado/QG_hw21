@@ -34,4 +34,13 @@ public interface BrowserStackConfig extends Config {
 
     @Key("name")
     String getName();
+    // Локаторы для использования на разных платформах
+    @Key("locator.searchButton")
+    String getSearchButton();
+
+    @Key("locator.searchInput")
+    String getSearchInput();
+
+    @Key("locator.itemTitle")
+    String getItemTitle();
 }

@@ -1,6 +1,8 @@
 package tests;
 
+import config.BrowserStackConfig;
 import io.appium.java_client.AppiumBy;
+import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
@@ -11,25 +13,28 @@ import static io.qameta.allure.Allure.step;
 
 public class SearchTests extends TestBase{
 
+    private final BrowserStackConfig config = ConfigFactory.create(
+            BrowserStackConfig.class, System.getProperties());
+
     @Test
     void successfullSearchTest() {
         step("Type search", () -> {
-            $(accessibilityId("Search Wikipedia")).click();
-            $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("Appium");
+            $(accessibilityId(config.getSearchButton())).click();
+            $(id(config.getSearchInput())).sendKeys("Appium");
         });
         step("Verify content found", () ->
-                $$(id("org.wikipedia.alpha:id/page_list_item_title"))
+                $$(id(config.getItemTitle()))
                         .shouldHave(sizeGreaterThan(0)));
     }
 
     @Test
     void anotherSearchTest() {
         step("Type search", () -> {
-            $(accessibilityId("Search Wikipedia")).click();
-            $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("FN Five-seven");
+            $(accessibilityId(config.getSearchButton())).click();
+            $(id(config.getSearchInput())).sendKeys("FN Five-seven");
         });
         step("Verify header text", () ->
-                $(id("org.wikipedia.alpha:id/page_list_item_title"))
+                $(id(config.getItemTitle()))
                         .shouldHave(text("FN Five-seven")));
     }
 }
